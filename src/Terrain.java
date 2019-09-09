@@ -9,11 +9,9 @@ public class Terrain {
     public Terrain() {
         for (int i = 0; i < ROW_COUNT; i++) {
             for (int j = 0; j < COL_COUNT; j++) {
-                difficulty[i][j] = new Random().nextInt(15);
+                difficulty[i][j] = new Random().nextInt(15) + 1;
             }
         }
-
-        getDifficultyValues();
     }
 
     public String getDifficultyValues() {
