@@ -57,7 +57,8 @@ public class GUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new GUI();
+        new DBReader();
+        //new GUI();
     }
 
     private class ActionListeners implements ActionListener {
