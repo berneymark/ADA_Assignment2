@@ -1,3 +1,4 @@
 # Project exclude paths
 /out/
 /src/loginData.txt
+.idea/dictionaries/markberney.xml
