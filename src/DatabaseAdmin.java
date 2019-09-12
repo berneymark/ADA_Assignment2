@@ -14,8 +14,9 @@ public class DatabaseAdmin {
     private Statement statement = null;
     private ResultSet resultSet = null;
 
-    private String[][] coords;
-    private String[] difficulty;
+    public String[][] difficulty;
+    private int rows;
+    private int cols;
 
     private void getUserLogin() {
         String[] loginData = new String[2];
@@ -59,20 +60,93 @@ public class DatabaseAdmin {
             }
             connection = null;
         }
+
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            statement = null;
+        }
+
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            resultSet = null;
+        }
+    }
+
+    private void setRowsAndCols(String tableName) {
+        switch (tableName) {
+            case "illustrated":
+                rows = 5;
+                cols = 5;
+                break;
+            case "large":
+                rows = 50;
+                cols = 40;
+                break;
+            case "medium":
+                rows = 30;
+                cols = 20;
+                break;
+            case "small":
+                rows = 10;
+                cols = 10;
+                break;
+            case "tinyA":
+                rows = 4;
+                cols = 7;
+                break;
+            case "tinyB":
+                rows = 3;
+                cols = 3;
+                break;
+        }
     }
 
     public void setTable(String tableName) {
+        setRowsAndCols(tableName);
+        difficulty = new String[rows][cols];
+        System.out.println(rows + " " + cols);
+
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM " + tableName);
 
+            int rowCount = 0, colCount = 0;
             while(resultSet.next()) {
-                System.out.print(resultSet.getString(1) + "  ");
-                System.out.print(resultSet.getString(2) + "  ");
-                System.out.println(resultSet.getString(3));
+                System.out.println(rowCount + " " + colCount);
+                difficulty[rowCount][colCount] = resultSet.getString(3);
+
+                if (colCount == cols - 1) {
+                    colCount = 0;
+                    rowCount++;
+                } else {
+                    colCount++;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        DatabaseAdmin db = new DatabaseAdmin();
+        db.connectDatabase();
+        db.setTable("small");
+
+        int count = 1;
+        for (String row[] : db.difficulty) {
+            for (String diff : row) {
+                System.out.println(count + " : " + diff);
+                count++;
+            }
+        }
+        System.out.println(db.difficulty);
     }
 }
