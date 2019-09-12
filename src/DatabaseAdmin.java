@@ -14,7 +14,7 @@ public class DatabaseAdmin {
     private Statement statement = null;
     private ResultSet resultSet = null;
 
-    public String[][] difficulty;
+    private String[][] difficulty;
     private int rows;
     private int cols;
 
@@ -109,10 +109,9 @@ public class DatabaseAdmin {
         }
     }
 
-    public void setTable(String tableName) {
+    public void setDifficulty(String tableName) {
         setRowsAndCols(tableName);
         difficulty = new String[rows][cols];
-        System.out.println(rows + " " + cols);
 
         try {
             statement = connection.createStatement();
@@ -120,7 +119,6 @@ public class DatabaseAdmin {
 
             int rowCount = 0, colCount = 0;
             while(resultSet.next()) {
-                System.out.println(rowCount + " " + colCount);
                 difficulty[rowCount][colCount] = resultSet.getString(3);
 
                 if (colCount == cols - 1) {
@@ -135,10 +133,22 @@ public class DatabaseAdmin {
         }
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public String[][] getDifficulty() {
+        return difficulty;
+    }
+
     public static void main(String[] args) {
         DatabaseAdmin db = new DatabaseAdmin();
         db.connectDatabase();
-        db.setTable("small");
+        db.setDifficulty("small");
 
         int count = 1;
         for (String row[] : db.difficulty) {
