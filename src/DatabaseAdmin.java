@@ -1,3 +1,4 @@
+import javax.xml.transform.Result;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -9,7 +10,9 @@ public class DatabaseAdmin {
     private String username = null;
     private String password = null;
 
-    private Connection con = null;
+    private Connection connection = null;
+    private Statement statement = null;
+    private ResultSet resultSet = null;
 
     private void getUserLogin() {
         String[] loginData = new String[2];
@@ -38,25 +41,41 @@ public class DatabaseAdmin {
         try {
             Class.forName(DRIVER);
             System.out.println("Trying to open connection to raptor2.");
-            con = DriverManager.getConnection(DB_URL, username, password);
+            connection = DriverManager.getConnection(DB_URL, username, password);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
     
     private void closeAll() {
-        if (con != null) {
+        if (connection != null) {
             try {
-                con.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            con = null;
+            connection = null;
+        }
+    }
+
+    private void getTable(String tableName) {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM " + tableName);
+
+            while(resultSet.next()) {
+                System.out.print(resultSet.getString(1) + "  ");
+                System.out.print(resultSet.getString(2) + "  ");
+                System.out.println(resultSet.getString(3));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
         DatabaseAdmin db = new DatabaseAdmin();
         db.connectDatabase();
+        db.getTable("large");
     }
 }
