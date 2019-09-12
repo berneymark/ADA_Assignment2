@@ -57,7 +57,7 @@ public class GUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new DBReader();
+        new DatabaseAdmin();
         //new GUI();
     }
 
