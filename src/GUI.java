@@ -7,8 +7,6 @@ public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
     private final int WINDOW_HEIGHT = 600;
 
-    private Terrain currentTerrain = null;
-
     private JButton addTerrainFromServer;
 
     private GUI() {
@@ -42,30 +40,15 @@ public class GUI extends JFrame {
         controlPanel.add(addTerrainFromServer);
     }
 
-    private boolean setCurrentTerrain(Terrain newTerrain) {
-        if (currentTerrain == null) {
-            currentTerrain = newTerrain;
-            return true;
-        } else {
-            JOptionPane.showMessageDialog(null, "Terrain is already set.");
-            return false;
-        }
-    }
-
-    private Terrain getCurrentTerrain() {
-        return currentTerrain;
-    }
-
     public static void main(String[] args) {
-        new DatabaseAdmin();
-        //new GUI();
+        new GUI();
     }
 
     private class ActionListeners implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == addTerrainFromServer) {
-                setCurrentTerrain(new Terrain());
+                
             }
         }
     }

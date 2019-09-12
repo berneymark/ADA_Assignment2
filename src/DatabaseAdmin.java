@@ -14,6 +14,9 @@ public class DatabaseAdmin {
     private Statement statement = null;
     private ResultSet resultSet = null;
 
+    private String[][] coords;
+    private String[] difficulty;
+
     private void getUserLogin() {
         String[] loginData = new String[2];
         Scanner inputFile = null;
@@ -58,7 +61,7 @@ public class DatabaseAdmin {
         }
     }
 
-    private void getTable(String tableName) {
+    private void setTable(String tableName) {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM " + tableName);
@@ -76,6 +79,6 @@ public class DatabaseAdmin {
     public static void main(String[] args) {
         DatabaseAdmin db = new DatabaseAdmin();
         db.connectDatabase();
-        db.getTable("large");
+        db.setTable("tinyB");
     }
 }
