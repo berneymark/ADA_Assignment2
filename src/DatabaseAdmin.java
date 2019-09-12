@@ -38,7 +38,7 @@ public class DatabaseAdmin {
         inputFile.close();
     }
 
-    private void connectDatabase() {
+    public void connectDatabase() {
         getUserLogin();
 
         try {
@@ -50,7 +50,7 @@ public class DatabaseAdmin {
         }
     }
     
-    private void closeAll() {
+    public void closeAll() {
         if (connection != null) {
             try {
                 connection.close();
@@ -61,7 +61,7 @@ public class DatabaseAdmin {
         }
     }
 
-    private void setTable(String tableName) {
+    public void setTable(String tableName) {
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM " + tableName);
@@ -74,11 +74,5 @@ public class DatabaseAdmin {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        DatabaseAdmin db = new DatabaseAdmin();
-        db.connectDatabase();
-        db.setTable("tinyB");
     }
 }

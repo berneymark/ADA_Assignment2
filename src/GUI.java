@@ -7,10 +7,14 @@ public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
     private final int WINDOW_HEIGHT = 600;
 
-    private JButton addTerrainFromServer;
+    private DatabaseAdmin database = new DatabaseAdmin();
+
+    private JButton submitTerrain;
+    private JComboBox selectTerrain;
 
     private GUI() {
         buildGUI();
+        database.connectDatabase();
     }
 
     private void buildGUI() {
@@ -35,9 +39,20 @@ public class GUI extends JFrame {
         JPanel controlPanel = new JPanel();
         add(controlPanel, BorderLayout.SOUTH);
 
-        addTerrainFromServer = new JButton("Add Terrain From Server");
-        addTerrainFromServer.addActionListener(new ActionListeners());
-        controlPanel.add(addTerrainFromServer);
+        String[] tableNames = {
+                "illustrated",
+                "large",
+                "medium",
+                "small",
+                "tinyA",
+                "tinyB"
+        };
+        selectTerrain = new JComboBox(tableNames);
+        controlPanel.add(selectTerrain);
+
+        submitTerrain = new JButton("Add Terrain From Server");
+        submitTerrain.addActionListener(new ActionListeners());
+        controlPanel.add(submitTerrain);
     }
 
     public static void main(String[] args) {
@@ -47,8 +62,8 @@ public class GUI extends JFrame {
     private class ActionListeners implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == addTerrainFromServer) {
-                
+            if (e.getSource() == submitTerrain) {
+                JOptionPane.showMessageDialog(null, (String)selectTerrain.getSelectedItem());
             }
         }
     }
