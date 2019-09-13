@@ -144,19 +144,4 @@ public class DatabaseAdmin {
     public String[][] getDifficulty() {
         return difficulty;
     }
-
-    public static void main(String[] args) {
-        DatabaseAdmin db = new DatabaseAdmin();
-        db.connectDatabase();
-        db.setDifficulty("small");
-
-        int count = 1;
-        for (String row[] : db.difficulty) {
-            for (String diff : row) {
-                System.out.println(count + " : " + diff);
-                count++;
-            }
-        }
-        System.out.println(db.difficulty);
-    }
 }

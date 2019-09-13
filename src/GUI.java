@@ -11,10 +11,26 @@ public class GUI extends JFrame {
 
     private JButton submitTerrain;
     private JComboBox selectTerrain;
+    private JPanel blankPanel;
+    private JPanel parentPanel;
+    private JPanel terrainPanel;
 
     private GUI() {
         buildGUI();
         database.connectDatabase();
+
+        parentPanel = new JPanel();
+        parentPanel.setLayout(new CardLayout());
+        add(parentPanel, BorderLayout.CENTER);
+
+        blankPanel = new JPanel();
+        blankPanel.setBackground(Color.WHITE);
+        parentPanel.add(blankPanel);
+
+        terrainPanel = new JPanel();
+        parentPanel.add(terrainPanel);
+
+        setVisible(true);
     }
 
     private void buildGUI() {
@@ -31,8 +47,6 @@ public class GUI extends JFrame {
         );
 
         setControlPanel();
-
-        setVisible(true);
     }
 
     private void setControlPanel() {
@@ -63,7 +77,16 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == submitTerrain) {
-                JOptionPane.showMessageDialog(null, (String)selectTerrain.getSelectedItem());
+                database.setDifficulty((String)selectTerrain.getSelectedItem());
+                TerrainPanel tp = new TerrainPanel(
+                        database.getRows(),
+                        database.getCols(),
+                        database.getDifficulty()
+                );
+                terrainPanel = tp;
+                repaint();
+
+                parentPanel.next();
             }
         }
     }
