@@ -1,7 +1,6 @@
 public class VehicleAutoControl implements Vehicle {
     private int currentRow;
     private int currectColumn;
-    private char direction;
 
     @Override
     public void setCurrentRow(int row) {
@@ -22,19 +21,8 @@ public class VehicleAutoControl implements Vehicle {
     public int getCurrentColumn() {
         return currectColumn;
     }
-
     @Override
-    public void setDirection(char direction) {
-        this.direction = direction;
-    }
-
-    @Override
-    public char getDirection() {
-        return direction;
-    }
-
-    @Override
-    public void move() {
+    public void notifyGUI() {
 
     }
 

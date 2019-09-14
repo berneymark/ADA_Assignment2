@@ -3,12 +3,13 @@ import java.awt.*;
 public class VehicleManualControl implements Vehicle {
     private int currentRow;
     private int currentColumn;
-    private char direction;
 
+    private GUI gui;
     private TerrainPanel terrain;
 
-    public VehicleManualControl(TerrainPanel terrain) {
+    public VehicleManualControl(GUI gui, TerrainPanel terrain) {
         setCurrentRow(0);
+        this.gui = gui;
         this.terrain = terrain;
     }
 
@@ -33,43 +34,41 @@ public class VehicleManualControl implements Vehicle {
     }
 
     @Override
-    public void setDirection(char direction) {
-        this.direction = direction;
-    }
-
-    @Override
-    public char getDirection() {
-        return direction;
-    }
-
-    @Override
-    public void move() {
-        if (direction == 'a') {
-            left();
-        } else if (direction == 's') {
-            forwards();
-        } else if (direction == 'd') {
-            right();
-        } else System.out.println("This key does nothing.");
+    public void notifyGUI() {
+        gui.updateVehicleLocation();
     }
 
     @Override
     public void left() {
         System.out.println("Moved front-left");
-        currentRow++;
-        currentColumn--;
+
+        if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
+                && (currentColumn > 0 && currentColumn <= terrain.getColumns() - 1)) {
+            currentRow++;
+            currentColumn--;
+            notifyGUI();
+        } else System.out.println("can't go left");
     }
 
     @Override
     public void right() {
         System.out.println("Moved front-right");
-        currentRow++;
-        currentColumn++;
+
+        if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
+                && (currentColumn >= 0 && currentColumn < terrain.getColumns() - 1)) {
+            currentRow++;
+            currentColumn++;
+            notifyGUI();
+        }
     }
 
     @Override
     public void forwards() {
         System.out.println("Moved forwards");
-        currentRow++;
+
+        if (currentRow >= 0 && currentRow < terrain.getRows() - 1) {
+            currentRow++;
+            notifyGUI();
+        }
     }
 }

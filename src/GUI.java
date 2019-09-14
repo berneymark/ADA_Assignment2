@@ -129,7 +129,7 @@ public class GUI extends JFrame {
         );
 
         if (vehicleSelect.equals("Manual Control")) {
-            vehicle = new VehicleManualControl(terrainPanel);
+            vehicle = new VehicleManualControl(this, terrainPanel);
         } else if (vehicleSelect.equals("Automated Control")) {
             vehicle = new VehicleAutoControl();
         }
@@ -154,17 +154,27 @@ public class GUI extends JFrame {
         for (int i = 0; i < database.getCols(); i++) {
             if (i == startingColumnSelect) {
                 pathListModel.addElement(
-                        "[" +
-                                "0" +
-                                ", " +
-                                startingColumnSelect +
-                                "]"
+                    "[" +
+                    "0" +
+                    ", " +
+                    startingColumnSelect +
+                    "]"
                 );
             }
         }
 
         vehicle.setCurrentColumn(startingColumnSelect);
 
+    }
+
+    public void updateVehicleLocation() {
+        pathListModel.addElement(
+            "[" +
+            vehicle.getCurrentRow() +
+            ", " +
+            vehicle.getCurrentColumn() +
+            "]"
+        );
     }
 
     public static void main(String[] args) {
@@ -175,35 +185,11 @@ public class GUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == leftButton) {
-                vehicle.setDirection('a');
-                vehicle.move();
-                pathListModel.addElement(
-                    "[" +
-                    vehicle.getCurrentRow() +
-                    ", " +
-                    vehicle.getCurrentColumn() +
-                    "]"
-                );
+                vehicle.left();
             } else if (e.getSource() == forwardButton) {
-                vehicle.setDirection('s');
-                vehicle.move();
-                pathListModel.addElement(
-                    "[" +
-                    vehicle.getCurrentRow() +
-                    ", " +
-                    vehicle.getCurrentColumn() +
-                    "]"
-                );
+                vehicle.forwards();
             } else if (e.getSource() == rightButton) {
-                vehicle.setDirection('d');
-                vehicle.move();
-                pathListModel.addElement(
-                    "[" +
-                    vehicle.getCurrentRow() +
-                    ", " +
-                    vehicle.getCurrentColumn() +
-                    "]"
-                );
+                vehicle.right();
             }
         }
     }
