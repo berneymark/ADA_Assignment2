@@ -1,6 +1,6 @@
-public class VehicleManualControl implements Vehicle {
+public class VehicleAutoClass implements Vehicle {
     private int currentRow;
-    private int currentColumn;
+    private int currectColumn;
 
     @Override
     public void setCurrentRow(int row) {
@@ -9,7 +9,7 @@ public class VehicleManualControl implements Vehicle {
 
     @Override
     public void setCurrentColumn(int column) {
-        this.currentColumn = column;
+        this.currectColumn = column;
     }
 
     @Override
@@ -19,14 +19,14 @@ public class VehicleManualControl implements Vehicle {
 
     @Override
     public int getCurrentColumn() {
-        return currentColumn;
+        return currectColumn;
     }
 
     @Override
     public void move() {
 
     }
-    
+
     @Override
     public void left() {
 

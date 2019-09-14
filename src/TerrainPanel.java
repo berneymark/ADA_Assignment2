@@ -17,7 +17,7 @@ public class TerrainPanel extends JPanel {
         setVisible(true);
     }
 
-    public void drawTerrain() {
+    private void drawTerrain() {
         setLayout(new GridLayout(rows, columns));
         regions = new JPanel[rows][columns];
 

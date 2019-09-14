@@ -8,11 +8,13 @@ public class GUI extends JFrame {
     private final int WINDOW_HEIGHT = 600;
 
     private DatabaseAdmin database = new DatabaseAdmin();
+    private Vehicle vehicle = null;
 
     private GUI() {
         buildGUI();
         database.connectDatabase();
         selectTerrain();
+        selectVehicle();
 
         setVisible(true);
     }
@@ -51,7 +53,6 @@ public class GUI extends JFrame {
                 tableNames[0]
         );
 
-        System.out.println(terrainSelect);
         database.setDifficulty(terrainSelect);
         TerrainPanel terrainPanel = new TerrainPanel(
                 database.getRows(),
@@ -60,6 +61,29 @@ public class GUI extends JFrame {
         );
 
         add(terrainPanel, BorderLayout.CENTER);
+    }
+
+    private void selectVehicle() {
+        String[] vehicleNames = {
+            "Manual Control",
+            "Automated Control"
+        };
+
+        String vehicleSelect = (String)JOptionPane.showInputDialog(
+                this,
+                "Please choose a vehicle:",
+                "Vehicle Select",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                vehicleNames,
+                vehicleNames[0]
+        );
+
+        if (vehicleSelect.equals("Manual Control")) {
+            vehicle = new VehicleManualControl();
+        } else if (vehicleSelect.equals("Automated Control")) {
+            vehicle = null;
+        }
     }
 
     public static void main(String[] args) {

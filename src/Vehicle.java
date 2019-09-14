@@ -7,4 +7,7 @@ public interface Vehicle {
 
     // changes currentRow and currentColumn
     public void move();
+    public void left();
+    public void right();
+    public void forwards();
 }
