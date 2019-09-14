@@ -50,11 +50,12 @@ public class VehicleManualControl implements Vehicle {
             forwards();
         } else if (direction == 'd') {
             right();
-        }
+        } else System.out.println("This key does nothing.");
     }
 
     @Override
     public void left() {
+        System.out.println("Moved front-left");
         terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
                 .setBackground(Color.WHITE);
 
@@ -67,6 +68,7 @@ public class VehicleManualControl implements Vehicle {
 
     @Override
     public void right() {
+        System.out.println("Moved front-right");
         terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
                 .setBackground(Color.WHITE);
 
@@ -79,6 +81,7 @@ public class VehicleManualControl implements Vehicle {
 
     @Override
     public void forwards() {
+        System.out.println("Moved forwards");
         terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
                 .setBackground(Color.WHITE);
 

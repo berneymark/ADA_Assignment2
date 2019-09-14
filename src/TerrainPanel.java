@@ -33,6 +33,14 @@ public class TerrainPanel extends JPanel {
         }
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
     public JPanel[][] getRegions() {
         return regions;
     }

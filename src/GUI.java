@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Scanner;
 
 public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
@@ -16,7 +17,20 @@ public class GUI extends JFrame {
         selectVehicle();
         selectStartingColumn();
 
+
+
         setVisible(true);
+
+        if (vehicle instanceof VehicleManualControl) {
+            System.out.println("this is manual");
+            while (vehicle.getCurrentRow() < terrainPanel.getRows()) {
+                Scanner direction = new Scanner(System.in);
+                vehicle.setDirection(direction.nextLine().charAt(0));
+                vehicle.move();
+            }
+        } else if (vehicle instanceof VehicleAutoControl) {
+            System.out.println("this is auto");
+        }
     }
 
     private void buildGUI() {
