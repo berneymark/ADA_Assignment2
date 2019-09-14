@@ -1,9 +1,9 @@
 public interface Vehicle {
-    public void setCurrentRow();
-    public void setCurrentColumn();
+    public void setCurrentRow(int row);
+    public void setCurrentColumn(int column);
 
-    public void getCurrentRow();
-    public void getCurrentColumn();
+    public int getCurrentRow();
+    public int getCurrentColumn();
 
     // changes currentRow and currentColumn
     public void move();
