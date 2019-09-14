@@ -114,6 +114,7 @@ public class DatabaseAdmin {
         difficulty = new String[rows][cols];
 
         try {
+            System.out.println(tableName);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM " + tableName);
 

@@ -9,26 +9,10 @@ public class GUI extends JFrame {
 
     private DatabaseAdmin database = new DatabaseAdmin();
 
-    private JButton submitTerrain;
-    private JComboBox selectTerrain;
-    private JPanel blankPanel;
-    private JPanel parentPanel;
-    private JPanel terrainPanel;
-
     private GUI() {
         buildGUI();
         database.connectDatabase();
-
-        parentPanel = new JPanel();
-        parentPanel.setLayout(new CardLayout());
-        add(parentPanel, BorderLayout.CENTER);
-
-        blankPanel = new JPanel();
-        blankPanel.setBackground(Color.WHITE);
-        parentPanel.add(blankPanel);
-
-        terrainPanel = new JPanel();
-        parentPanel.add(terrainPanel);
+        selectTerrain();
 
         setVisible(true);
     }
@@ -37,7 +21,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        setTitle("abc");
+        setTitle("Path Finder");
         getContentPane();
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,14 +29,9 @@ public class GUI extends JFrame {
                 dim.width / 2 - getSize().width / 2,
                 dim.height / 2 - getSize().height / 2
         );
-
-        setControlPanel();
     }
 
-    private void setControlPanel() {
-        JPanel controlPanel = new JPanel();
-        add(controlPanel, BorderLayout.SOUTH);
-
+    private void selectTerrain() {
         String[] tableNames = {
                 "illustrated",
                 "large",
@@ -61,33 +40,29 @@ public class GUI extends JFrame {
                 "tinyA",
                 "tinyB"
         };
-        selectTerrain = new JComboBox(tableNames);
-        controlPanel.add(selectTerrain);
 
-        submitTerrain = new JButton("Add Terrain From Server");
-        submitTerrain.addActionListener(new ActionListeners());
-        controlPanel.add(submitTerrain);
+        String terrainSelect = (String)JOptionPane.showInputDialog(
+                this,
+                "Please choose a terrain:",
+                "Terrain Select",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                tableNames,
+                tableNames[0]
+        );
+
+        System.out.println(terrainSelect);
+        database.setDifficulty(terrainSelect);
+        TerrainPanel terrainPanel = new TerrainPanel(
+                database.getRows(),
+                database.getCols(),
+                database.getDifficulty()
+        );
+
+        add(terrainPanel, BorderLayout.CENTER);
     }
 
     public static void main(String[] args) {
         new GUI();
-    }
-
-    private class ActionListeners implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == submitTerrain) {
-                database.setDifficulty((String)selectTerrain.getSelectedItem());
-                TerrainPanel tp = new TerrainPanel(
-                        database.getRows(),
-                        database.getCols(),
-                        database.getDifficulty()
-                );
-                terrainPanel = tp;
-                repaint();
-
-                parentPanel.next();
-            }
-        }
     }
 }
