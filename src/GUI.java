@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 public class GUI extends JFrame {
@@ -49,12 +51,15 @@ public class GUI extends JFrame {
         JPanel controlPanel = new JPanel();
         if (vehicle instanceof VehicleManualControl) {
             leftButton = new JButton("Left");
+            leftButton.addActionListener(new ButtonListeners());
             controlPanel.add(leftButton);
 
             forwardButton = new JButton("Forwards");
+            forwardButton.addActionListener(new ButtonListeners());
             controlPanel.add(forwardButton);
 
             rightButton = new JButton("Right");
+            rightButton.addActionListener(new ButtonListeners());
             controlPanel.add(rightButton);
         } else if (vehicle instanceof VehicleAutoControl) {
             controlPanel.add(new JLabel("auto controlled"));
@@ -143,5 +148,21 @@ public class GUI extends JFrame {
 
     public static void main(String[] args) {
         new GUI();
+    }
+
+    public class ButtonListeners implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == leftButton) {
+                vehicle.setDirection('a');
+                vehicle.move();
+            } else if (e.getSource() == forwardButton) {
+                vehicle.setDirection('s');
+                vehicle.move();
+            } else if (e.getSource() == rightButton) {
+                vehicle.setDirection('d');
+                vehicle.move();
+            }
+        }
     }
 }
