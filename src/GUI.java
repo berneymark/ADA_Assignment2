@@ -80,7 +80,7 @@ public class GUI extends JFrame {
         );
 
         if (vehicleSelect.equals("Manual Control")) {
-            vehicle = new VehicleManualControl();
+            vehicle = new VehicleManualControl(terrainPanel);
         } else if (vehicleSelect.equals("Automated Control")) {
             vehicle = new VehicleAutoControl();
         }
@@ -107,6 +107,8 @@ public class GUI extends JFrame {
                 terrainPanel.getRegions()[0][i].setBackground(Color.GREEN);
             }
         }
+
+        vehicle.setCurrentColumn(startingColumnSelect);
     }
 
     public static void main(String[] args) {
