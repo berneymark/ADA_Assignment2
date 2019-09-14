@@ -6,6 +6,10 @@ public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
     private final int WINDOW_HEIGHT = 600;
 
+    JButton forwardButton;
+    JButton leftButton;
+    JButton rightButton;
+
     private DatabaseAdmin database = new DatabaseAdmin();
     private TerrainPanel terrainPanel;
     private Vehicle vehicle;
@@ -16,21 +20,15 @@ public class GUI extends JFrame {
         selectTerrain();
         selectVehicle();
         selectStartingColumn();
-
-
-
-        setVisible(true);
+        setControlPanel();
 
         if (vehicle instanceof VehicleManualControl) {
             System.out.println("this is manual");
-            while (vehicle.getCurrentRow() < terrainPanel.getRows()) {
-                Scanner direction = new Scanner(System.in);
-                vehicle.setDirection(direction.nextLine().charAt(0));
-                vehicle.move();
-            }
         } else if (vehicle instanceof VehicleAutoControl) {
             System.out.println("this is auto");
         }
+
+        setVisible(true);
     }
 
     private void buildGUI() {
@@ -45,6 +43,24 @@ public class GUI extends JFrame {
                 dim.width / 2 - getSize().width / 2,
                 dim.height / 2 - getSize().height / 2
         );
+    }
+
+    private void setControlPanel() {
+        JPanel controlPanel = new JPanel();
+        if (vehicle instanceof VehicleManualControl) {
+            leftButton = new JButton("Left");
+            controlPanel.add(leftButton);
+
+            forwardButton = new JButton("Forwards");
+            controlPanel.add(forwardButton);
+
+            rightButton = new JButton("Right");
+            controlPanel.add(rightButton);
+        } else if (vehicle instanceof VehicleAutoControl) {
+            controlPanel.add(new JLabel("auto controlled"));
+        }
+
+        add(controlPanel, BorderLayout.SOUTH);
     }
 
     private void selectTerrain() {

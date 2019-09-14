@@ -21,13 +21,19 @@ public class TerrainPanel extends JPanel {
         setLayout(new GridLayout(rows, columns));
         regions = new JPanel[rows][columns];
 
+        //TODO: terrains may be showing sideways...check that
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 regions[i][j] = new JPanel();
                 regions[i][j].setBorder(
                         BorderFactory.createLineBorder(Color.BLACK)
                 );
-                regions[i][j].add(new JLabel(difficulty[i][j]));
+                regions[i][j].add(new JLabel(
+                    "[" +
+                    i + ", " + j +
+                    "] : " +
+                    difficulty[i][j])
+                );
                 add(regions[i][j]);
             }
         }
