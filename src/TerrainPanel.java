@@ -13,8 +13,7 @@ public class TerrainPanel extends JPanel {
         this.rows = rows;
         this.columns = columns;
         this.difficulty = difficulty;
-        setBackground(Color.YELLOW);
-        //drawTerrain();
+        drawTerrain();
         setVisible(true);
     }
 
@@ -24,9 +23,7 @@ public class TerrainPanel extends JPanel {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                System.out.println("setting panels...");
                 regions[i][j] = new JPanel();
-                regions[i][j].setBackground(Color.GREEN);
                 regions[i][j].setBorder(
                         BorderFactory.createLineBorder(Color.BLACK)
                 );
