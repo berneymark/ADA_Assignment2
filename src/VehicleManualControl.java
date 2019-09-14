@@ -56,38 +56,20 @@ public class VehicleManualControl implements Vehicle {
     @Override
     public void left() {
         System.out.println("Moved front-left");
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.WHITE);
-
-        setCurrentRow(currentRow++);
-        setCurrentColumn(currentColumn--);
-
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.GREEN);
+        currentRow++;
+        currentColumn--;
     }
 
     @Override
     public void right() {
         System.out.println("Moved front-right");
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.WHITE);
-
-        setCurrentRow(currentRow++);
-        setCurrentColumn(currentColumn++);
-
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.GREEN);
+        currentRow++;
+        currentColumn++;
     }
 
     @Override
     public void forwards() {
         System.out.println("Moved forwards");
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.WHITE);
-
-        setCurrentRow(currentRow++);
-
-        terrain.getRegions()[getCurrentRow()][getCurrentColumn()]
-                .setBackground(Color.GREEN);
+        currentRow++;
     }
 }

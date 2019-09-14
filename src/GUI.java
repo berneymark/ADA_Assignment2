@@ -8,9 +8,10 @@ public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
     private final int WINDOW_HEIGHT = 600;
 
-    JButton forwardButton;
-    JButton leftButton;
-    JButton rightButton;
+    private DefaultListModel<String> pathListModel;
+    private JButton forwardButton;
+    private JButton leftButton;
+    private JButton rightButton;
 
     private DatabaseAdmin database = new DatabaseAdmin();
     private TerrainPanel terrainPanel;
@@ -18,17 +19,15 @@ public class GUI extends JFrame {
 
     private GUI() {
         buildGUI();
+        setPathPanel();
+
         database.connectDatabase();
+
         selectTerrain();
         selectVehicle();
         selectStartingColumn();
-        setControlPanel();
 
-        if (vehicle instanceof VehicleManualControl) {
-            System.out.println("this is manual");
-        } else if (vehicle instanceof VehicleAutoControl) {
-            System.out.println("this is auto");
-        }
+        setControlPanel();
 
         setVisible(true);
     }
@@ -45,6 +44,21 @@ public class GUI extends JFrame {
                 dim.width / 2 - getSize().width / 2,
                 dim.height / 2 - getSize().height / 2
         );
+    }
+
+    private void setPathPanel() {
+        JPanel pathPanel = new JPanel();
+        pathPanel.setLayout(new BorderLayout());
+        pathPanel.setPreferredSize(
+                new Dimension(100, pathPanel.getPreferredSize().height)
+        );
+
+        pathListModel = new DefaultListModel<>();
+        JList pathList = new JList(pathListModel);
+        pathPanel.add(new JLabel("Path History"), BorderLayout.NORTH);
+        pathPanel.add(new JScrollPane(pathList), BorderLayout.CENTER);
+
+        add(pathPanel, BorderLayout.EAST);
     }
 
     private void setControlPanel() {
@@ -139,11 +153,18 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < database.getCols(); i++) {
             if (i == startingColumnSelect) {
-                terrainPanel.getRegions()[0][i].setBackground(Color.GREEN);
+                pathListModel.addElement(
+                        "[" +
+                                "0" +
+                                ", " +
+                                startingColumnSelect +
+                                "]"
+                );
             }
         }
 
         vehicle.setCurrentColumn(startingColumnSelect);
+
     }
 
     public static void main(String[] args) {
@@ -156,12 +177,33 @@ public class GUI extends JFrame {
             if (e.getSource() == leftButton) {
                 vehicle.setDirection('a');
                 vehicle.move();
+                pathListModel.addElement(
+                    "[" +
+                    vehicle.getCurrentRow() +
+                    ", " +
+                    vehicle.getCurrentColumn() +
+                    "]"
+                );
             } else if (e.getSource() == forwardButton) {
                 vehicle.setDirection('s');
                 vehicle.move();
+                pathListModel.addElement(
+                    "[" +
+                    vehicle.getCurrentRow() +
+                    ", " +
+                    vehicle.getCurrentColumn() +
+                    "]"
+                );
             } else if (e.getSource() == rightButton) {
                 vehicle.setDirection('d');
                 vehicle.move();
+                pathListModel.addElement(
+                    "[" +
+                    vehicle.getCurrentRow() +
+                    ", " +
+                    vehicle.getCurrentColumn() +
+                    "]"
+                );
             }
         }
     }
