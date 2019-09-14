@@ -1,4 +1,4 @@
-public class VehicleAutoClass implements Vehicle {
+public class VehicleAutoControl implements Vehicle {
     private int currentRow;
     private int currectColumn;
 

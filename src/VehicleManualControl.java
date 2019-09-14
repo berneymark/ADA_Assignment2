@@ -26,7 +26,7 @@ public class VehicleManualControl implements Vehicle {
     public void move() {
 
     }
-    
+
     @Override
     public void left() {
 

@@ -32,4 +32,8 @@ public class TerrainPanel extends JPanel {
             }
         }
     }
+
+    public JPanel[][] getRegions() {
+        return regions;
+    }
 }

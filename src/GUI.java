@@ -1,20 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
     private final int WINDOW_HEIGHT = 600;
 
     private DatabaseAdmin database = new DatabaseAdmin();
-    private Vehicle vehicle = null;
+    private TerrainPanel terrainPanel;
+    private Vehicle vehicle;
 
     private GUI() {
         buildGUI();
         database.connectDatabase();
         selectTerrain();
         selectVehicle();
+        selectStartingColumn();
 
         setVisible(true);
     }
@@ -54,7 +54,7 @@ public class GUI extends JFrame {
         );
 
         database.setDifficulty(terrainSelect);
-        TerrainPanel terrainPanel = new TerrainPanel(
+        terrainPanel = new TerrainPanel(
                 database.getRows(),
                 database.getCols(),
                 database.getDifficulty()
@@ -82,7 +82,30 @@ public class GUI extends JFrame {
         if (vehicleSelect.equals("Manual Control")) {
             vehicle = new VehicleManualControl();
         } else if (vehicleSelect.equals("Automated Control")) {
-            vehicle = null;
+            vehicle = new VehicleAutoControl();
+        }
+    }
+
+    private void selectStartingColumn() {
+        Integer[] columns = new Integer[database.getCols()];
+        for (int i = 0; i < database.getCols(); i++) {
+            columns[i] = i;
+        }
+
+        int startingColumnSelect = (int)JOptionPane.showInputDialog(
+                this,
+                "Please select a starting column:",
+                "Starting Column Select",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                columns,
+                columns[0]
+        );
+
+        for (int i = 0; i < database.getCols(); i++) {
+            if (i == startingColumnSelect) {
+                terrainPanel.getRegions()[0][i].setBackground(Color.GREEN);
+            }
         }
     }
 
