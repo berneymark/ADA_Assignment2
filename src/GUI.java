@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class GUI extends JFrame {
     private final int WINDOW_WIDTH = 900;
-    private final int WINDOW_HEIGHT = 600;
+    private final int WINDOW_HEIGHT = 900;
 
     private DefaultListModel<String> pathListModel;
     private JButton forwardButton;
