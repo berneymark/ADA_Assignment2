@@ -1,6 +1,8 @@
 import org.w3c.dom.NodeList;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class VehicleAutoControl implements Vehicle {
@@ -16,7 +18,8 @@ public class VehicleAutoControl implements Vehicle {
         this.terrain = terrain;
     }
 
-    public void initAssemblyLine(int column) {
+    public void createTree(int column) {
+        LinkedList<LinkedList> rows = new LinkedList<>();
         Node rootNode = new Node(
             null,
             0,
@@ -24,8 +27,47 @@ public class VehicleAutoControl implements Vehicle {
             Integer.parseInt(terrain.getDifficulty()[0][column])
         );
 
-        for (int i = 0; i < terrain.getRows(); i++) {
+        currentRow = 0;
+        currentColumn = column;
 
+        Node currentNode = rootNode;
+
+        for (int i = 0; i < terrain.getRows(); i++) {
+            if (left()) {
+                currentNode.leftChild = new Node(
+                    currentNode,
+                    currentRow,
+                    currentColumn,
+                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
+                );
+
+                currentRow = currentNode.getRow();
+                currentColumn = currentNode.getColumn();
+            }
+
+            if (forwards()) {
+                currentNode.frontChild = new Node(
+                    currentNode,
+                    currentRow,
+                    currentColumn,
+                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
+                );
+
+                currentRow = currentNode.getRow();
+                currentColumn = currentNode.getColumn();
+            }
+
+            if (right()) {
+                currentNode.rightChild = new Node(
+                    currentNode,
+                    currentRow,
+                    currentColumn,
+                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
+                );
+
+                currentRow = currentNode.getRow();
+                currentColumn = currentNode.getColumn();
+            }
         }
     }
 
@@ -55,13 +97,11 @@ public class VehicleAutoControl implements Vehicle {
     }
 
     @Override
-    public void left() {
     public boolean left() {
         if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
                 && (currentColumn > 0 && currentColumn <= terrain.getColumns() - 1)) {
             currentRow++;
             currentColumn--;
-            notifyGUI();
             return true;
         }
 
@@ -69,13 +109,11 @@ public class VehicleAutoControl implements Vehicle {
     }
 
     @Override
-    public void right() {
     public boolean right() {
         if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
                 && (currentColumn >= 0 && currentColumn < terrain.getColumns() - 1)) {
             currentRow++;
             currentColumn++;
-            notifyGUI();
             return true;
         }
 
@@ -83,11 +121,9 @@ public class VehicleAutoControl implements Vehicle {
     }
 
     @Override
-    public void forwards() {
     public boolean forwards() {
         if (currentRow >= 0 && currentRow < terrain.getRows() - 1) {
             currentRow++;
-            notifyGUI();
             return true;
         }
 
