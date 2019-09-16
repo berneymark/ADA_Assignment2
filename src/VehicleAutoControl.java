@@ -130,7 +130,7 @@ public class VehicleAutoControl implements Vehicle {
         return false;
     }
 
-    private class Node {
+    private class Node<E> implements Comparable<Node> {
         private Node parentNode;
         private Node leftChild;
         private Node frontChild;
@@ -169,6 +169,13 @@ public class VehicleAutoControl implements Vehicle {
 
         public int getDifficulty() {
             return difficulty;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            if (this.row - o.getRow() == 0) {
+                return this.column - o.getColumn();
+            } else return this.row -  o.getRow();
         }
     }
 }
