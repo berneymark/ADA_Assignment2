@@ -84,4 +84,46 @@ public class VehicleAutoControl implements Vehicle {
             notifyGUI();
         }
     }
+
+    private class Node {
+        private Node parentNode;
+        private Node leftChild;
+        private Node frontChild;
+        private Node rightChild;
+
+        private int row;
+        private int column;
+        private int difficulty;
+
+        public Node(Node parentNode, int row, int column, int difficulty) {
+            this.parentNode = parentNode;
+            this.row = row;
+            this.column = column;
+            this.difficulty = difficulty;
+        }
+
+        public void setLeftChild(Node leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public void setFrontChild(Node frontChild) {
+            this.frontChild = frontChild;
+        }
+
+        public void setRightChild(Node rightChild) {
+            this.rightChild = rightChild;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
+        public int getColumn() {
+            return column;
+        }
+
+        public int getDifficulty() {
+            return difficulty;
+        }
+    }
 }
