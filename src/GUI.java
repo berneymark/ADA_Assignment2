@@ -131,7 +131,7 @@ public class GUI extends JFrame {
         if (vehicleSelect.equals("Manual Control")) {
             vehicle = new VehicleManualControl(this, terrainPanel);
         } else if (vehicleSelect.equals("Automated Control")) {
-            vehicle = new VehicleAutoControl();
+            vehicle = new VehicleAutoControl(this, terrainPanel);
         }
     }
 
@@ -163,8 +163,10 @@ public class GUI extends JFrame {
             }
         }
 
-        vehicle.setCurrentColumn(startingColumnSelect);
-
+        if (vehicle instanceof VehicleManualControl)
+            vehicle.setCurrentColumn(startingColumnSelect);
+        else if (vehicle instanceof VehicleAutoControl)
+            ((VehicleAutoControl) vehicle).setStartCoords(startingColumnSelect);
     }
 
     public void updateVehicleLocation() {
