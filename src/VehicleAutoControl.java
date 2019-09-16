@@ -56,30 +56,42 @@ public class VehicleAutoControl implements Vehicle {
 
     @Override
     public void left() {
+    public boolean left() {
         if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
                 && (currentColumn > 0 && currentColumn <= terrain.getColumns() - 1)) {
             currentRow++;
             currentColumn--;
             notifyGUI();
+            return true;
         }
+
+        return false;
     }
 
     @Override
     public void right() {
+    public boolean right() {
         if ((currentRow >= 0 && currentRow < terrain.getRows() - 1)
                 && (currentColumn >= 0 && currentColumn < terrain.getColumns() - 1)) {
             currentRow++;
             currentColumn++;
             notifyGUI();
+            return true;
         }
+
+        return false;
     }
 
     @Override
     public void forwards() {
+    public boolean forwards() {
         if (currentRow >= 0 && currentRow < terrain.getRows() - 1) {
             currentRow++;
             notifyGUI();
+            return true;
         }
+
+        return false;
     }
 
     private class Node {

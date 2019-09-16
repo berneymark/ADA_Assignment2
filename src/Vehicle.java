@@ -7,7 +7,7 @@ public interface Vehicle {
 
     // changes currentRow and currentColumn
     public void notifyGUI();
-    public void left();
-    public void right();
-    public void forwards();
+    public boolean left();
+    public boolean right();
+    public boolean forwards();
 }
