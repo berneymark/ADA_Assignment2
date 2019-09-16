@@ -1,12 +1,11 @@
+import org.w3c.dom.NodeList;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class VehicleAutoControl implements Vehicle {
     private int currentRow;
     private int currentColumn;
-
-    private int[] startCoords = new int[2];
-    private Set<Integer> targetColumns = new HashSet<>();
 
     private GUI gui;
     private TerrainPanel terrain;
@@ -15,21 +14,19 @@ public class VehicleAutoControl implements Vehicle {
         setCurrentRow(0);
         this.gui = gui;
         this.terrain = terrain;
+    }
 
-        for (int i = 0; i < terrain.getColumns(); i++) {
-            targetColumns.add(i);
+    public void initAssemblyLine(int column) {
+        Node rootNode = new Node(
+            null,
+            0,
+            column,
+            Integer.parseInt(terrain.getDifficulty()[0][column])
+        );
+
+        for (int i = 0; i < terrain.getRows(); i++) {
+
         }
-    }
-
-    public void setStartCoords(int col) {
-        startCoords[0] = 0;
-        startCoords[1] = col;
-
-        currentColumn = col;
-    }
-
-    public void navigatePath() {
-
     }
 
     @Override

@@ -47,6 +47,10 @@ public class TerrainPanel extends JPanel {
         return columns;
     }
 
+    public String[][] getDifficulty() {
+        return difficulty;
+    }
+
     public JPanel[][] getRegions() {
         return regions;
     }

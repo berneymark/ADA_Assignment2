@@ -165,8 +165,8 @@ public class GUI extends JFrame {
 
         if (vehicle instanceof VehicleManualControl)
             vehicle.setCurrentColumn(startingColumnSelect);
-        else if (vehicle instanceof VehicleAutoControl)
-            ((VehicleAutoControl) vehicle).setStartCoords(startingColumnSelect);
+        //else if (vehicle instanceof VehicleAutoControl)
+            //((VehicleAutoControl) vehicle).setStartCoords(startingColumnSelect);
     }
 
     public void updateVehicleLocation() {
