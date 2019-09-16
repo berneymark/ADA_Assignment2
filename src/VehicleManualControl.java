@@ -35,7 +35,7 @@ public class VehicleManualControl implements Vehicle {
 
     @Override
     public void notifyGUI() {
-        gui.updateVehicleLocation();
+        gui.updateVehicleLocation(currentRow, currentColumn);
     }
 
     @Override

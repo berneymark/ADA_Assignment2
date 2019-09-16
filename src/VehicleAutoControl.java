@@ -1,10 +1,3 @@
-import org.w3c.dom.NodeList;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
 public class VehicleAutoControl implements Vehicle {
     private int currentRow;
     private int currentColumn;
@@ -16,58 +9,187 @@ public class VehicleAutoControl implements Vehicle {
         setCurrentRow(0);
         this.gui = gui;
         this.terrain = terrain;
+
+        int[] colPaths = new int[terrain.getColumns()];
+        for (int i = 0; i < terrain.getColumns() - 1; i++) {
+            colPaths[i] = searchPaths(i);
+            System.out.println("\nPATHED ADDED" + i);
+        }
+
+        int easiestColumn = 0;
+
+        for (int i = 0; i < terrain.getColumns() - 1; i++) {
+            if (colPaths[i] < easiestColumn) {
+                easiestColumn = i;
+            }
+        }
+
+        runPath(easiestColumn);
     }
 
-    public void createTree(int column) {
-        LinkedList<LinkedList> rows = new LinkedList<>();
-        Node rootNode = new Node(
-            null,
-            0,
-            column,
-            Integer.parseInt(terrain.getDifficulty()[0][column])
+    public int searchPaths(int column) {
+        Node start = new Node(
+                0, column,
+                Integer.parseInt(terrain.getDifficulty()[0][column])
         );
 
+        Node end = new Node(
+                terrain.getRows(), column,
+                Integer.parseInt(terrain.getDifficulty()[0][column])
+        );
+        
+        Node current = start;
+        int difficultyCount = start.difficulty;
+
+        System.out.println("TERRAIN: " + terrain.getRows());
+
+        while (current.getRow() != terrain.getRows() - 1) {
+            Node left = null;
+            System.out.println("COLUMN: " + current.getColumn() + " ROW: " + current.getRow());
+            if (current.getColumn() > 0) {
+                left = new Node(
+                    current.getRow() + 1,
+                    current.getColumn() - 1,
+                    Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn() - 1])
+                );
+                left.setParent(current);
+                left.setDistance(end);
+                left.setTotalCost();
+            }
+            
+            Node front = new Node(
+                current.getRow() + 1,
+                current.getColumn(),
+                Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn()])
+            );
+            front.setParent(current);
+            front.setDistance(end);
+            front.setTotalCost();
+
+            Node right = null;
+            if (current.getColumn() < terrain.getColumns()) {
+                right = new Node(
+                    current.getRow() + 1,
+                    current.getColumn() + 1,
+                    Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn() + 1])
+                );
+                right.setParent(current);
+                right.setDistance(end);
+                right.setTotalCost();
+            }
+
+            if (left == null && right == null) {
+                current = front;
+                System.out.println("FRONT");
+            } else if (left == null && right != null) {
+                if (right.compareTo(front) < 0) {
+                    current = right;
+                    System.out.println("RIGHT");
+                } else {
+                    current = front;
+                    System.out.println("FRONT");
+                }
+            } else if (left != null && right == null) {
+                if (left.compareTo(front) < 0) {
+                    current = left;
+                    System.out.println("LEFT");
+                } else {
+                    current = front;
+                    System.out.println("FRONT");
+                }
+            } else {
+                if (left.compareTo(front) < 0) {
+                    if (left.compareTo(right) < 0) {
+                        current = left;
+                        System.out.println("LEFT");
+                    } else {
+                        current = right;
+                        System.out.println("RIGHT");
+                    }
+                } else {
+                    current = front;
+                    System.out.println("FRONT");
+                }
+            }
+
+            difficultyCount += current.difficulty;
+        }
+
+        return difficultyCount;
+    }
+
+    private void runPath(int column) {
         currentRow = 0;
         currentColumn = column;
+        notifyGUI();
+        Node start = new Node(
+                0, column,
+                Integer.parseInt(terrain.getDifficulty()[0][column])
+        );
 
-        Node currentNode = rootNode;
+        Node end = new Node(
+                terrain.getRows(), column,
+                Integer.parseInt(terrain.getDifficulty()[0][column])
+        );
 
-        for (int i = 0; i < terrain.getRows(); i++) {
-            if (left()) {
-                currentNode.leftChild = new Node(
-                    currentNode,
-                    currentRow,
-                    currentColumn,
-                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
+        Node current = start;
+
+        while (current.getRow() != terrain.getRows() - 1) {
+            Node left = null;
+            if (current.getColumn() > 0) {
+                left = new Node(
+                        current.getRow() + 1,
+                        current.getColumn() - 1,
+                        Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn() - 1])
                 );
-
-                currentRow = currentNode.getRow();
-                currentColumn = currentNode.getColumn();
+                left.setParent(current);
+                left.setDistance(end);
+                left.setTotalCost();
             }
 
-            if (forwards()) {
-                currentNode.frontChild = new Node(
-                    currentNode,
-                    currentRow,
-                    currentColumn,
-                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
-                );
+            Node front = new Node(
+                    current.getRow() + 1,
+                    current.getColumn(),
+                    Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn()])
+            );
+            front.setParent(current);
+            front.setDistance(end);
+            front.setTotalCost();
 
-                currentRow = currentNode.getRow();
-                currentColumn = currentNode.getColumn();
+            Node right = null;
+            if (current.getColumn() < terrain.getColumns()) {
+                right = new Node(
+                        current.getRow() + 1,
+                        current.getColumn() + 1,
+                        Integer.parseInt(terrain.getDifficulty()[current.getRow() + 1][current.getColumn() + 1])
+                );
+                right.setParent(current);
+                right.setDistance(end);
+                right.setTotalCost();
             }
 
-            if (right()) {
-                currentNode.rightChild = new Node(
-                    currentNode,
-                    currentRow,
-                    currentColumn,
-                    Integer.parseInt(terrain.getDifficulty()[currentRow][currentColumn])
-                );
-
-                currentRow = currentNode.getRow();
-                currentColumn = currentNode.getColumn();
+            if (left == null && right == null) {
+                current = front;
+            } else if (left == null && right != null) {
+                if (right.compareTo(front) < 0) {
+                    current = right;
+                } else current = front;
+            } else if (left != null && right == null) {
+                if (left.compareTo(front) < 0) {
+                    current = left;
+                } else current = front;
+            } else {
+                if (left.compareTo(front) < 0) {
+                    if (left.compareTo(right) < 0) {
+                        current = left;
+                    } else current = right;
+                } else current = front;
             }
+
+            currentRow = current.getRow();
+            currentColumn = current.getColumn();
+            if (currentRow <= terrain.getRows())
+                notifyGUI();
         }
     }
 
@@ -93,7 +215,7 @@ public class VehicleAutoControl implements Vehicle {
 
     @Override
     public void notifyGUI() {
-
+        gui.updateVehicleLocation(currentRow, currentColumn);
     }
 
     @Override
@@ -131,32 +253,33 @@ public class VehicleAutoControl implements Vehicle {
     }
 
     private class Node<E> implements Comparable<Node> {
-        private Node parentNode;
-        private Node leftChild;
-        private Node frontChild;
-        private Node rightChild;
+        private Node parent;
 
-        private int row;
-        private int column;
+        private int row, column;
+
+        private int distance;
         private int difficulty;
+        private int totalCost;
 
-        public Node(Node parentNode, int row, int column, int difficulty) {
-            this.parentNode = parentNode;
+        public Node(int row, int column, int difficulty) {
             this.row = row;
             this.column = column;
             this.difficulty = difficulty;
         }
 
-        public void setLeftChild(Node leftChild) {
-            this.leftChild = leftChild;
+        public void setDistance(Node target) {
+            int distRow = target.getRow() - row;
+            int distCol = target.getColumn() - column;
+            
+            distance = distRow + distCol;
         }
 
-        public void setFrontChild(Node frontChild) {
-            this.frontChild = frontChild;
+        public void setTotalCost() {
+            totalCost = distance + difficulty;
         }
 
-        public void setRightChild(Node rightChild) {
-            this.rightChild = rightChild;
+        public void setParent(Node parent) {
+            this.parent = parent;
         }
 
         public int getRow() {
@@ -171,11 +294,20 @@ public class VehicleAutoControl implements Vehicle {
             return difficulty;
         }
 
+        public int getTotalCost() {
+            return totalCost;
+        }
+
+        public boolean isEqual(Node s, Node e) {
+            if (s.getRow() == e.getRow() && s.getColumn() == e.getColumn()) {
+                return true;
+            } else return false;
+        }
+
         @Override
         public int compareTo(Node o) {
-            if (this.row - o.getRow() == 0) {
-                return this.column - o.getColumn();
-            } else return this.row -  o.getRow();
+            //negative means I am less
+            return this.totalCost - o.getTotalCost();
         }
     }
 }

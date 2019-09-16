@@ -25,7 +25,8 @@ public class GUI extends JFrame {
 
         selectTerrain();
         selectVehicle();
-        selectStartingColumn();
+        if (vehicle instanceof VehicleManualControl)
+            selectStartingColumn();
 
         setControlPanel();
 
@@ -165,16 +166,14 @@ public class GUI extends JFrame {
 
         if (vehicle instanceof VehicleManualControl)
             vehicle.setCurrentColumn(startingColumnSelect);
-        //else if (vehicle instanceof VehicleAutoControl)
-            //((VehicleAutoControl) vehicle).setStartCoords(startingColumnSelect);
     }
 
-    public void updateVehicleLocation() {
+    public void updateVehicleLocation(int row, int col) {
         pathListModel.addElement(
             "[" +
-            vehicle.getCurrentRow() +
+            row +
             ", " +
-            vehicle.getCurrentColumn() +
+            col +
             "]"
         );
     }
